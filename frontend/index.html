@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error Infotech - All Internship Programs</title>
+    <link rel="stylesheet" href="footer.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary: #304c64;
+            --primary-light: #446884;
+            --secondary: #26788e;
+            --accent: #26788e;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #94a3b8;
+            --gray-light: #e2e8f0;
+            --white: #ffffff;
+            --text-white: #ffffff;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            color: #1e293b;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #304c64 0%, #26788e 100%);
+            color: white;
+            padding: 3rem 0;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Operations Color Variables */
+        :root {
+            --primary: #304c64;
+            --primary-light: #26788e;
+            --primary-dark: #223647;
+            --secondary: #26788e;
+            --accent: #26788e;
+            --accent-light: #304c64;
+            --corporate: #5a6e7f;
+            --success: #38a169;
+            --warning: #e53e3e;
+            --dark: #1e293b;
+            --darker: #0f172a;
+            --light: #f8fafc;
+            --lighter: #ffffff;
+            --gray: #94a3b8;
+            --gray-light: #e2e8f0;
+            --gray-dark: #475569;
+            --white: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #475569;
+            --text-light: #64748b;
+            --text-white: #ffffff;
+            --gradient-primary: linear-gradient(135deg, var(--primary), var(--secondary));
+            --gradient-accent: linear-gradient(135deg, var(--secondary), var(--accent));
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 6px 12px -2px rgba(0, 0, 0, 0.15);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.25);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --border-radius: 12px;
+            --border-radius-lg: 18px;
+        }
+
+        /* Programs Grid */
+        .programs-section {
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, var(--light) 0%, #e9ecef 100%);
+            min-height: 100vh;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            color: var(--darker);
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            font-size: 1.2rem;
+            color: var(--gray-dark);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .programs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .program-card {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-md);
+            text-align: center;
+            transition: var(--transition);
+            border: 1px solid var(--gray-light);
+            cursor: pointer;
+        }
+
+        .program-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--secondary);
+        }
+
+        .program-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .program-title {
+            font-size: 1.5rem;
+            color: var(--darker);
+            margin-bottom: 1rem;
+        }
+
+        .program-description {
+            color: var(--gray-dark);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .view-program {
+            display: inline-block;
+            background: var(--gradient-primary);
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: var(--transition);
+            border: 2px solid transparent;
+        }
+
+        .view-program:hover {
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+
+
+        /* Contact Form Styles */
+        .contact-section {
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, var(--lighter) 0%, var(--light) 100%);
+            margin-top: 2rem;
+        }
+
+        .contact-form-container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            padding: 2.5rem;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-lg);
+            position: relative;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .input-icon-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .input-icon-wrapper input,
+        .input-icon-wrapper select,
+        .input-icon-wrapper textarea {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3.2rem;
+            border: 2px solid var(--gray-light);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+            transition: var(--transition);
+        }
+
+        .input-icon-wrapper input:focus,
+        .input-icon-wrapper select:focus,
+        .input-icon-wrapper textarea:focus {
+            outline: none;
+            border-color: var(--secondary);
+        }
+
+        .input-icon-wrapper i {
+            position: absolute;
+            left: 1.2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+            pointer-events: none;
+            font-size: 1.1rem;
+            z-index: 5;
+            transition: var(--transition);
+        }
+
+        .input-icon-wrapper textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .input-icon-wrapper textarea~i {
+            top: 1.6rem;
+            transform: none;
+        }
+
+
+        .submit-btn {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 1rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 0.5rem;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .form-message {
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            margin-top: 1rem;
+            text-align: center;
+            display: none;
+        }
+
+        .form-message.success {
+            background: rgba(56, 161, 105, 0.2);
+            color: var(--success);
+            display: block;
+        }
+
+        .form-message.error {
+            background: rgba(229, 62, 62, 0.2);
+            color: var(--warning);
+            display: block;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: var(--lighter);
+            margin: 5% auto;
+            padding: 2rem;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .close {
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+            color: var(--gray-dark);
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1001;
+            background: var(--gray-light);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close:hover {
+            background: var(--gray);
+            color: var(--darker);
+        }
+
+        .faq-item {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: var(--gray-light);
+            border-radius: 8px;
+        }
+
+        .faq-item h3 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+
+        .terms-content h3,
+        .privacy-content h3 {
+            color: var(--primary);
+            margin: 1.5rem 0 0.5rem 0;
+        }
+
+        .terms-content p,
+        .privacy-content p {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .programs-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                margin: 10% auto;
+                width: 95%;
+                padding: 1.5rem;
+            }
+
+            .contact-details {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <div class="container">
+            <h1><img src="image/logo4.png" alt="Error Infotech Logo" style="height: 90px; width: auto;" /></h1>
+            <p>All Paid Internship Programs - Click on any program to view details</p>
+        </div>
+    </div>
+
+    <section class="programs-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Available Internship Programs</h2>
+                <p>Choose from our comprehensive paid internship programs with 60-80 structured operations</p>
+            </div>
+
+            <div class="programs-grid">
+                <div class="program-card" onclick="window.location.href='ai-ml internship.html'">
+                    <div class="program-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3 class="program-title">AI/ML Internship</h3>
+                    <p class="program-description">Artificial Intelligence and Machine Learning internship with advanced
+                        operations and practical projects.</p>
+                    <a href="ai-ml internship.html" class="view-program">View Program</a>
+                </div>
+
+                <div class="program-card" onclick="window.location.href='bde-operations.html'">
+                    <div class="program-icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <h3 class="program-title">BDE Operation</h3>
+                    <p class="program-description">Business development executive</p>
+                    <a href="bde-operations.html" class="view-program">View Program</a>
+                </div>
+
+
+
+                <div class="program-card" onclick="window.location.href='content-creator.html'">
+                    <div class="program-icon">
+                        <i class="fas fa-user-edit"></i>
+                    </div>
+                    <h3 class="program-title">Content Creator</h3>
+                    <p class="program-description">Advanced content creation with SEO optimization and audience
+                        engagement strategies.</p>
+                    <a href="content-creator.html" class="view-program">View Program</a>
+                </div>
+
+                <div class="program-card" onclick="window.location.href='creative-services.html'">
+                    <div class="program-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <h3 class="program-title">Creative Services</h3>
+                    <p class="program-description">Graphic Design and Video Editing operations with professional
+                        creative tools.</p>
+                    <a href="creative-services.html" class="view-program">View Program</a>
+                </div>
+
+                <div class="program-card" onclick="window.location.href='digital bussiness management.html'">
+                    <div class="program-icon">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <h3 class="program-title">Digital Marketing</h3>
+                    <p class="program-description">Comprehensive digital marketing operations with browser automation
+                        and campaigns.</p>
+                    <a href="digital bussiness management.html" class="view-program">View Program</a>
+                </div>
+
+                <div class="program-card" onclick="window.location.href='full-stack development.html'">
+                    <div class="program-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3 class="program-title">Full Stack Development</h3>
+                    <p class="program-description">Complete web development with frontend and backend technologies and
+                        deployment.</p>
+                    <a href="full-stack development.html" class="view-program">View Program</a>
+                </div>
+
+                <div class="program-card" onclick="window.location.href='graphic-designer-operations.html'">
+                    <div class="program-icon">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h3 class="program-title">Graphic Designer</h3>
+                    <p class="program-description">Professional graphic design with creative tools and brand identity
+                        development.</p>
+                    <a href="graphic-designer-operations.html" class="view-program">View Program</a>
+                </div>
+
+                <div class="program-card" onclick="window.location.href='photo-video-editing.html'">
+                    <div class="program-icon">
+                        <i class="fas fa-ad"></i>
+                    </div>
+                    <h3 class="program-title">Video Editing / Photo Editing</h3>
+                    <p class="program-description">Traditional and physical marketing operations with design and
+                        promotional materials.</p>
+                    <a href="photo-video-editing.html" class="view-program">View Program</a>
+                </div>
+
+                <div class="program-card" onclick="window.location.href='hr-management.html'">
+                    <div class="program-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="program-title">HR Management</h3>
+                    <p class="program-description">Human Resources management with recruitment, training, and employee
+                        relations.</p>
+                    <a href="hr-management.html" class="view-program">View Program</a>
+                </div>
+
+                <div class="program-card" onclick="window.location.href='long-short-content-writer.html'">
+                    <div class="program-icon">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <h3 class="program-title">Long / Short Content Writer</h3>
+                    <p class="program-description">In-depth content creation for blogs, articles, and long-form
+                        publications.</p>
+                    <a href="long-short-content-writer.html" class="view-program">View Program</a>
+                </div>
+
+                <div class="program-card" onclick="window.location.href='performance-marketing.html'">
+                    <div class="program-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="program-title">Performance Marketing</h3>
+                    <p class="program-description">Data-driven marketing with analytics, optimization, and ROI-focused
+                        campaigns.</p>
+                    <a href="performance-marketing.html" class="view-program">View Program</a>
+                </div>
+
+                <div class="program-card" onclick="window.location.href='product photography-videography.html'">
+                    <div class="program-icon">
+                        <i class="fas fa-camera"></i>
+                    </div>
+                    <h3 class="program-title">Product Photography & Videography</h3>
+                    <p class="program-description">Product photography and visual presentation for e-commerce and
+                        marketing.</p>
+                    <a href="product photography-videography.html" class="view-program">View Program</a>
+                </div>
+
+
+
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Apply for Internship</h2>
+                <p>Fill out the form below and our team will contact you shortly</p>
+            </div>
+
+            <div class="contact-form-container">
+                <form id="internshipForm" class="contact-form">
+                    <div class="form-group">
+                        <div class="input-icon-wrapper">
+                            <input type="text" id="fullName" name="fullName" placeholder="Surname Name Fathername"
+                                required>
+                            <i class="fas fa-user"></i>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="input-icon-wrapper">
+                            <input type="email" id="email" name="email" placeholder="example@email.com" required>
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="input-icon-wrapper">
+                            <input type="tel" id="phone" name="phone" placeholder="+91-8128704400" required>
+                            <i class="fas fa-phone"></i>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="input-icon-wrapper">
+                            <select id="experience" name="experience" required>
+                                <option value="">Select Internship Duration</option>
+                                <option value="1.5">1.5 Month Internship (6 Weeks)</option>
+                                <option value="3">3 Month Internship (12 Weeks)</option>
+                                <option value="6">6 Month Internship (24 Weeks)</option>
+                            </select>
+                            <i class="fas fa-briefcase"></i>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="input-icon-wrapper">
+                            <select id="program" name="program" required>
+                                <option value="">Select Internship Program</option>
+                                <option value="AI/ML Internship">AI/ML Internship</option>
+                                <option value="Creative-Service">Creative-Service</option>
+                                <option value="Full Stack Development">Full Stack Development</option>
+                                <option value="Graphic Design">Graphic Designer</option>
+                                <option value="Graphic Design Physical marketing">Graphic Designer Physical Marketing
+                                </option>
+                                <option value="Performance Marketing">Performance Marketing</option>
+                                <option value="HR Management">HR Management</option>
+                                <option value="BDE operation">BDE Operation</option>
+                                <option value="Content-Creator">Content Creator</option>
+                                <option value="Photo-Video-Editing">Photography & Video Editing</option>
+                                <option value="Digital Business Development">Digital Business Development</option>
+                                <option value="Product Photography-Videography">Product Photography & Video Editing
+                                </option>
+                            </select>
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="input-icon-wrapper">
+                            <select id="package" name="package" required>
+                                <option value="">Select Preferred Package</option>
+                                <option value="Basic">Basic Package (1.5 Months)</option>
+                                <option value="Pro">Pro Package (3 Months)</option>
+                                <option value="Enterprise">Enterprise Package (6 Months)</option>
+                            </select>
+                            <i class="fas fa-box"></i>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="readyToCommit">Ready to commit to the selected internship duration and start
+                            immediately? *</label>
+                        <div class="input-icon-wrapper">
+                            <select id="readyToCommit" name="readyToCommit" required>
+                                <option value="">Select Yes/No</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                    </div>
+
+                    <div class="form-group checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="terms" name="terms" required>
+                            <span class="checkmark"></span>
+                            I agree to the terms and conditions *
+                        </label>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Submit Application</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Enhanced Modern Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-top">
+                    <div class="footer-brand">
+                        <div class="footer-logo">
+                            <img src="./image/logo4.png" alt="Error Infotech Logo" class="footer-logo-img">
+                        </div>
+                        <p class="footer-tagline">Leading digital solutions provider transforming businesses through
+                            innovation and excellence.</p>
+
+
+                    </div>
+
+                    <div class="footer-navigation">
+                        <div class="footer-column">
+                            <h4>Program</h4>
+                            <ul>
+                                <li><a href="#operations"><i class="fas fa-chevron-right"></i> Operations</a></li>
+                                <li><a href="#packages"><i class="fas fa-chevron-right"></i> Packages</a></li>
+                                <li><a href="#company"><i class="fas fa-chevron-right"></i> About Us</a></li>
+                                <li><a href="#contact"><i class="fas fa-chevron-right"></i> Apply Now</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="footer-column">
+                            <h4>Support</h4>
+                            <ul>
+                                <li><a href="#" onclick="openModal('faqModal'); return false;"><i
+                                            class="fas fa-chevron-right"></i> FAQ</a></li>
+                                <li><a href="#" onclick="openModal('contactModal'); return false;"><i
+                                            class="fas fa-chevron-right"></i> Contact</a></li>
+                                <li><a href="#" onclick="openModal('termsModal'); return false;"><i
+                                            class="fas fa-chevron-right"></i> Terms of Service</a></li>
+                                <li><a href="#" onclick="openModal('privacyModal'); return false;"><i
+                                            class="fas fa-chevron-right"></i> Privacy Policy</a></li>
+                            </ul>
+                        </div>
+
+
+                    </div>
+
+                    <div class="contact-info">
+                        <h4>Get In Touch</h4>
+                        <div class="contact-list">
+                            <div class="contact-item">
+                                <i class="fas fa-envelope"></i>
+                                <a href="mailto:errorinfotech404@gmail.com">errorinfotech404@gmail.com</a>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-phone-alt"></i>
+                                <a href="tel:+918128704400">+91 8128704400</a>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Rajkot, India</span>
+                            </div>
+                        </div>
+
+                        <div class="social-links">
+                            <a href="https://www.facebook.com/share/1Gt9Ec4B2A/" class="social-link"
+                                aria-label="Facebook" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                            <a href="https://www.instagram.com/errorinfotech_pvt.ltd?igsh=NzVhOWU2Njc4YWV2"
+                                class="social-link" aria-label="Instagram" target="_blank"><i
+                                    class="fab fa-instagram"></i></a>
+                            <a href="https://www.linkedin.com/in/error-infotech-1947b9381/" class="social-link"
+                                aria-label="LinkedIn" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#" class="social-link" aria-label="GitHub" target="_blank"><i
+                                    class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div class="footer-bottom-content">
+                    <div class="footer-copyright">
+                        &copy; 2026 Error Infotech. All rights reserved.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- FAQ Modal -->
+    <div id="faqModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('faqModal')">&times;</span>
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-item">
+                <h3>Q: What internship programs do you offer?</h3>
+                <p>A: We offer comprehensive paid internship programs in various fields including AI/ML, Big Data
+                    Engineering, Full Stack Development, Graphic Design, Performance Marketing, HR Management, Content
+                    Creation, and more.</p>
+            </div>
+            <div class="faq-item">
+                <h3>Q: How long are the internship programs?</h3>
+                <p>A: Our programs range from 1.5 months (Basic) to 3 months (Pro) to 6 months (Enterprise), depending
+                    on the package you choose.</p>
+            </div>
+            <div class="faq-item">
+                <h3>Q: Are the internships paid?</h3>
+                <p>A: Yes, all our internships are paid programs with structured operations and mentorship included.</p>
+            </div>
+            <div class="faq-item">
+                <h3>Q: Do I need prior experience?</h3>
+                <p>A: Our programs cater to all levels from beginners to advanced learners. We provide comprehensive
+                    training regardless of your experience level.</p>
+            </div>
+            <div class="faq-item">
+                <h3>Q: Will I receive a certificate?</h3>
+                <p>A: Yes, upon successful completion of the program, you will receive an internship completion
+                    certificate.</p>
+            </div>
+            <div class="faq-item">
+                <h3>Q: What support is provided during the internship?</h3>
+                <p>A: We provide mentorship sessions, career guidance, communication skill development, and client
+                    handling introduction.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Modal -->
+    <div id="contactModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('contactModal')">&times;</span>
+            <h2>Contact Us</h2>
+            <div class="contact-details">
+                <div class="contact-info">
+                    <h3>Get in Touch</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> Rajkot, Gujarat, India</p>
+                    <p><i class="fas fa-phone-alt"></i> +91 8128704400</p>
+                    <p><i class="fas fa-envelope"></i> errorinfotech404@gmail.com</p>
+                </div>
+                <div class="contact-hours">
+                    <h3>Working Hours</h3>
+                    <p>Monday - Friday: 9:00 AM - 7:00 PM</p>
+                    <p>Saturday: 10:00 AM - 4:00 PM</p>
+                    <p>Sunday: Closed</p>
+                </div>
+                <div class="contact-form">
+                    <h3>Send us a Message</h3>
+                    <form id="quickContactForm">
+                        <input type="text" name="fullName" placeholder="Your Name" required>
+                        <input type="email" name="email" placeholder="Your Email" required>
+                        <textarea name="message" placeholder="Your Message" rows="4" required></textarea>
+                        <button type="submit">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Terms and Conditions Modal -->
+    <div id="termsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('termsModal')">&times;</span>
+            <h2>Terms and Conditions</h2>
+            <div class="terms-content">
+                <h3>1. Acceptance of Terms</h3>
+                <p>By accessing and using Error Infotech's internship programs, you accept and agree to be bound by
+                    these terms and conditions.</p>
+
+                <h3>2. Eligibility</h3>
+                <p>You must be at least 18 years old to participate in our internship programs. By registering, you
+                    confirm that all information provided is accurate and complete.</p>
+
+                <h3>3. Internship Program Terms</h3>
+                <p>Participation in our internship programs requires commitment to complete the assigned tasks and
+                    operations. Failure to meet minimum requirements may result in non-completion of the program.</p>
+
+                <h3>4. Payment and Refunds</h3>
+                <p>All payments are non-refundable unless specifically stated. Payment plans and refund policies will be
+                    communicated at the time of enrollment.</p>
+
+                <h3>5. Intellectual Property</h3>
+                <p>All course materials, content, and intellectual property remain the property of Error Infotech.
+                    Students may not reproduce or distribute materials without permission.</p>
+
+                <h3>6. Confidentiality</h3>
+                <p>Students may have access to confidential information during the internship. This information must not
+                    be disclosed to third parties.</p>
+
+                <h3>7. Limitation of Liability</h3>
+                <p>Error Infotech shall not be liable for any indirect, incidental, or consequential damages arising
+                    from participation in our programs.</p>
+
+                <h3>8. Modifications</h3>
+                <p>We reserve the right to modify these terms at any time. Continued use of our services constitutes
+                    acceptance of such modifications.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Privacy Policy Modal -->
+    <div id="privacyModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('privacyModal')">&times;</span>
+            <h2>Privacy Policy</h2>
+            <div class="privacy-content">
+                <h3>1. Information We Collect</h3>
+                <p>We collect personal information including name, email address, phone number, and other details you
+                    provide during registration or communication.</p>
+
+                <h3>2. How We Use Your Information</h3>
+                <p>Your information is used to provide and improve our internship programs, communicate with you,
+                    process applications, and send relevant updates.</p>
+
+                <h3>3. Data Protection</h3>
+                <p>We implement appropriate security measures to protect against unauthorized access, alteration,
+                    disclosure, or destruction of your personal information.</p>
+
+                <h3>4. Sharing of Information</h3>
+                <p>We do not sell, trade, or rent your personal identification information to others. We may share
+                    generic aggregated demographic information not linked to any personal identification information.
+                </p>
+
+                <h3>5. Cookies</h3>
+                <p>We use cookies to understand and save your preferences for future visits and compile aggregate data
+                    about site traffic and site interaction.</p>
+
+                <h3>6. Third Party Disclosure</h3>
+                <p>We do not sell, trade, or otherwise transfer to outside parties your personally identifiable
+                    information unless we provide users with advance notice.</p>
+
+                <h3>7. Data Retention</h3>
+                <p>We retain your personal information as long as necessary to provide you with our services and comply
+                    with legal obligations.</p>
+
+                <h3>8. Your Rights</h3>
+                <p>You have the right to access, update, or delete your personal information. Contact us to exercise
+                    these rights.</p>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 2rem;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .close {
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+            color: #475569;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1001;
+            background: #e2e8f0;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close:hover {
+            background: #94a3b8;
+            color: #0f172a;
+        }
+
+        .faq-item {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 8px;
+        }
+
+        .faq-item h3 {
+            color: #304c64;
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .terms-content h3,
+        .privacy-content h3 {
+            color: #304c64;
+            margin: 1.5rem 0 0.5rem 0;
+        }
+
+        .terms-content p,
+        .privacy-content p {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+    </style>
+
+    <script>
+        // Modal Functions
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display =         document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside the content
+        window.onclick = function (event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Form submission for quick contact
+        document.getElementById('quickContactForm')?.addEventListener('submit', function (e) {
+            e.preventDefault();
+            alert('Thank you for your message! We will contact you shortly.');
+            this.reset();
+        });
+    </script>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

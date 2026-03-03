@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login | Error Infotech</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        .login-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--light) 0%, #e0e7ff 100%);
+            padding: 20px;
+        }
+
+        .login-card {
+            background: var(--white);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .login-logo {
+            margin-bottom: 30px;
+        }
+
+        .login-logo img {
+            height: 60px;
+        }
+
+        .login-header h1 {
+            font-size: 1.8rem;
+            color: var(--darker);
+            margin-bottom: 10px;
+        }
+
+        .login-header p {
+            color: var(--gray-dark);
+            margin-bottom: 30px;
+        }
+
+        .login-form .form-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .login-form label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--darker);
+        }
+
+        .login-form input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--gray-light);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .login-form input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .login-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+        }
+
+        .login-footer {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: var(--gray-dark);
+        }
+
+        .login-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+    </style>
+</head>
+
+<body>
+    <section class="login-section">
+        <div class="login-card">
+            <div class="login-logo">
+                <img src="image/logo4.png" alt="Error Infotech">
+            </div>
+            <div class="login-header">
+                <h1>Admin Portal</h1>
+                <p>Please enter your credentials to access the dashboard.</p>
+            </div>
+            <form id="adminLoginForm" class="login-form">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" required placeholder="admin@errorinfotech.com">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required placeholder="••••••••">
+                </div>
+                <button type="submit" class="login-btn">Log In</button>
+            </form>
+            <div id="loginMessage" style="margin-top:15px; display:none;"></div>
+            <div class="login-footer">
+                <p>Back to <a href="index.html">Main Website</a></p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        document.getElementById('adminLoginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const form = e.target;
+            const btn = form.querySelector('button');
+            const msg = document.getElementById('loginMessage');
+
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
+            btn.disabled = true;
+
+            const data = Object.fromEntries(new FormData(form));
+
+            try {
+                const response = await fetch('http://localhost:5002/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    msg.style.color = 'green';
+                    msg.textContent = 'Login Successful! Redirecting...';
+                    msg.style.display = 'block';
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 1500);
+                } else {
+                    msg.style.color = 'red';
+                    msg.textContent = result.message || 'Invalid Credentials';
+                    msg.style.display = 'block';
+                    btn.innerHTML = 'Log In';
+                    btn.disabled = false;
+                }
+            } catch (err) {
+                msg.style.color = 'red';
+                msg.textContent = 'Connection Error';
+                msg.style.display = 'block';
+                btn.innerHTML = 'Log In';
+                btn.disabled = false;
+            }
+        });
+    </script>
+</body>
+
+</html>
