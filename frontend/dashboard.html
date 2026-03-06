@@ -227,23 +227,63 @@
             loadApplications();
         }
 
-        async function loadApplications() {
-            try {
-                const response = await fetch('http://localhost:5002/api/forms', {
-                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }, // Support both
-                    credentials: 'include'
-                });
+        async function getBaseUrl() {
+            const endpoints = [];
+            const hostname = window.location.hostname;
+            const protocol = window.location.protocol;
 
-                if (response.status === 401 || response.status === 403) {
-                    window.location.href = 'admin-login.html';
-                    return;
+            if (protocol === 'file:') {
+                endpoints.push('http://127.0.0.1:5002', 'http://localhost:5002');
+            } else if (hostname === 'localhost' || hostname === '127.0.0.1') {
+                endpoints.push(`http://${hostname}:5002`);
+                endpoints.push(hostname === 'localhost' ? 'http://127.0.0.1:5002' : 'http://localhost:5002');
+            } else if (hostname) {
+                // Try the current hostname first, then try local loopbacks as fallback
+                endpoints.push(`http://${hostname}:5002`);
+                endpoints.push('http://127.0.0.1:5002', 'http://localhost:5002');
+            } else {
+                endpoints.push('http://127.0.0.1:5002', 'http://localhost:5002');
+            }
+            return [...new Set(endpoints)];
+        }
+
+        async function loadApplications() {
+            const body = document.getElementById('appsBody');
+            const uniqueEndpoints = await getBaseUrl();
+
+            const attemptFetch = async (index = 0) => {
+                const baseUrl = uniqueEndpoints[index];
+                if (!baseUrl) {
+                    throw new Error('All connection attempts failed. Please ensure the backend server is running on port 5002.');
                 }
 
-                const data = await response.json();
-                renderApplications(data);
+                try {
+                    const response = await fetch(`${baseUrl}/api/forms`, {
+                        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+                        credentials: 'include'
+                    });
+
+                    if (response.status === 401 || response.status === 403) {
+                        window.location.href = 'admin-login.html';
+                        return null;
+                    }
+
+                    if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+                    return await response.json();
+                } catch (err) {
+                    console.warn(`Attempt ${index + 1} failed for ${baseUrl}:`, err.message);
+                    return attemptFetch(index + 1);
+                }
+            };
+
+            try {
+                const data = await attemptFetch(0);
+                if (data) renderApplications(data);
             } catch (err) {
                 console.error(err);
-                document.getElementById('appsBody').innerHTML = '<tr><td colspan="6" style="text-align:center; padding:30px; color:red;">Failed to load data.</td></tr>';
+                body.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:30px; color:red;">
+                    <i class="fas fa-exclamation-triangle"></i> ${err.message}
+                </td></tr>`;
             }
         }
 

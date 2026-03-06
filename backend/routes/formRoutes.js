@@ -16,15 +16,18 @@ try {
     }
   });
 } catch (error) {
-  console.error('Error creating transporter:', error);
+  console.error('❌ Error creating email transporter:', error.message);
 }
 
 // POST route to handle form submission (Public)
 router.post('/submit', async (req, res) => {
   try {
+    console.log('📝 Received Form Submission:', req.body);
+
     // Save form data to database
     const formData = new Form(req.body);
-    await formData.save();
+    const savedData = await formData.save();
+    console.log('✅ Data saved to MongoDB:', savedData._id);
 
     // Automatically update Excel sheet
     await appendToExcel(formData);
@@ -49,11 +52,14 @@ router.post('/submit', async (req, res) => {
       };
 
       try {
-        await transporter.sendMail(mailOptions);
+        const info = await transporter.sendMail(mailOptions);
+        console.log('✅ HR Notification Email sent:', info.messageId);
       } catch (emailError) {
-        console.error('Error sending email:', emailError);
-        // We don't fail the request if only email fails
+        console.error('❌ Error sending HR notification email:', emailError.message);
+        // We don't fail the request if only email fails, but we log it
       }
+    } else {
+      console.warn('⚠️ Email notification skipped: Transporter not configured.');
     }
 
     res.status(200).json({

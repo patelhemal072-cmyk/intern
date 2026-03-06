@@ -339,29 +339,37 @@ let checkFormValidityGlobal = () => { };
 const initFormSubmission = () => {
     const forms = [
         { id: 'internshipForm', endpoint: '/api/forms/submit' },
-        { id: 'quickContactForm', endpoint: '/api/forms/submit' } // Reusing same for simplicity or redirect to message
+        { id: 'quickContactForm', endpoint: '/api/forms/submit' }
     ];
 
     forms.forEach(formConfig => {
         const form = document.getElementById(formConfig.id);
         if (!form) return;
 
+        // Prevent attaching multiple listeners
+        if (form.getAttribute('data-listener-attached')) return;
+        form.setAttribute('data-listener-attached', 'true');
+
+        let isSubmitting = false;
+
         form.addEventListener('submit', (e) => {
             e.preventDefault();
+            if (isSubmitting) return;
+
             const submitBtn = form.querySelector('button[type="submit"]');
             if (!submitBtn) return;
             const originalText = submitBtn.innerHTML;
 
-            // Clear any existing messages in this form
+            // Clear any existing messages EVERYWHERE in this form
             form.querySelectorAll('.success-message-box, .submit-error-message-box').forEach(el => el.remove());
 
+            isSubmitting = true;
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
             submitBtn.disabled = true;
 
             const formData = new FormData(form);
             const data = Object.fromEntries(formData);
 
-            // Special handling for quickContactForm to map names if they don't match Form model
             if (formConfig.id === 'quickContactForm') {
                 data.fullName = data.name || data.fullName;
                 data.phone = 'N/A';
@@ -372,6 +380,9 @@ const initFormSubmission = () => {
             }
 
             const showMessage = (type, text) => {
+                // Final safety check: remove any other message box first
+                form.querySelectorAll('.success-message-box, .submit-error-message-box').forEach(el => el.remove());
+
                 const msgBox = document.createElement('div');
                 msgBox.className = type === 'success' ? 'success-message-box' : 'submit-error-message-box';
                 msgBox.style.display = 'flex';
@@ -384,40 +395,105 @@ const initFormSubmission = () => {
                 }
             };
 
-            fetch(`http://localhost:5002${formConfig.endpoint}`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data),
-                credentials: 'include'
-            })
-                .then(response => {
-                    if (!response.ok) throw new Error('Network response was not ok');
-                    return response.json();
-                })
+            // Bulletproof API URL Detection and Sequential Retry
+            const endpoints = [];
+            const hostname = window.location.hostname;
+            const protocol = window.location.protocol;
+
+            if (protocol === 'file:') {
+                endpoints.push('http://127.0.0.1:5002', 'http://localhost:5002');
+            } else if (hostname === 'localhost' || hostname === '127.0.0.1') {
+                endpoints.push(`http://${hostname}:5002`);
+                endpoints.push(hostname === 'localhost' ? 'http://127.0.0.1:5002' : 'http://localhost:5002');
+            } else if (hostname) {
+                // Check if we are running on port 3000 (Vite)
+                if (window.location.port === '3000') {
+                    endpoints.push(`${protocol}//${hostname}:5002`);
+                }
+                endpoints.push(`${protocol}//${hostname}:5002`);
+                endpoints.push('http://127.0.0.1:5002', 'http://localhost:5002');
+            } else {
+                endpoints.push('http://127.0.0.1:5002', 'http://localhost:5002');
+            }
+
+            // Remove duplicates
+            const uniqueEndpoints = [...new Set(endpoints)];
+
+            console.log('🚀 Sequential connection strategy:', uniqueEndpoints);
+
+            const attemptSubmission = async (index = 0) => {
+                const baseUrl = uniqueEndpoints[index];
+                if (!baseUrl) {
+                    throw new Error('All connection attempts failed. Please ensure your backend is running on port 5002.');
+                }
+
+                console.log(`📡 [Attempt ${index + 1}] Trying: ${baseUrl}${formConfig.endpoint}`);
+
+                try {
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 5000); // 5s timeout
+
+                    const response = await fetch(`${baseUrl}${formConfig.endpoint}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify(data),
+                        credentials: 'include',
+                        signal: controller.signal
+                    });
+
+                    clearTimeout(timeoutId);
+
+                    if (!response.ok) {
+                        let errorDetail = response.status;
+                        try {
+                            const errData = await response.json();
+                            errorDetail = errData.message || response.status;
+                        } catch (e) { }
+                        throw new Error(`Server returned ${errorDetail}`);
+                    }
+
+                    return await response.json();
+                } catch (error) {
+                    console.warn(`⚠️ [Attempt ${index + 1}] Failed:`, error.message);
+
+                    // If it was a network error or timeout, try the next one
+                    if (error.name === 'AbortError' ||
+                        error.message.includes('fetch') ||
+                        error.message.includes('Failed to fetch') ||
+                        error.message.includes('NetworkError')) {
+                        return attemptSubmission(index + 1);
+                    }
+
+                    // Otherwise, it might be a validation error from server, stop retrying
+                    throw error;
+                }
+            };
+
+            attemptSubmission(0)
                 .then(result => {
+                    console.log('✅ Success:', result);
                     if (result.success) {
-                        // Use result.message if available, else fallback
                         showMessage('success', 'Submitted Successfully!');
                         form.reset();
-                        if (formConfig.id === 'internshipForm') {
-                            document.querySelectorAll('.input-valid, .input-invalid').forEach(el => {
-                                el.classList.remove('input-valid', 'input-invalid');
-                            });
-                            document.querySelectorAll('.error-message-box').forEach(el => el.classList.remove('show'));
-                            if (typeof checkFormValidityGlobal === 'function') checkFormValidityGlobal();
-                        }
+                        // Clear validation styles
+                        document.querySelectorAll('.input-valid, .input-invalid').forEach(el => {
+                            el.classList.remove('input-valid', 'input-invalid');
+                        });
+                        document.querySelectorAll('.error-message-box').forEach(el => el.classList.remove('show'));
+                        if (typeof checkFormValidityGlobal === 'function') checkFormValidityGlobal();
                     } else {
                         showMessage('error', result.message || 'Submission failed. Please try again.');
                     }
                 })
                 .catch(error => {
-                    console.error('Detailed Submission Error:', error);
-                    // Only show error message if no success message is already present
-                    if (!form.querySelector('.success-message-box')) {
-                        showMessage('error', 'Could not connect to the server.');
-                    }
+                    console.error('❌ Final Failure:', error);
+                    showMessage('error', error.message || 'Could not connect to the server. Please ensure your backend is running on port 5002.');
                 })
                 .finally(() => {
+                    isSubmitting = false;
                     submitBtn.innerHTML = originalText;
                     if (formConfig.id === 'internshipForm') {
                         submitBtn.disabled = true;
