@@ -352,7 +352,7 @@ const initFormSubmission = () => {
 
         let isSubmitting = false;
 
-        form.addEventListener('submit', (e) => {
+        form.addEventListener('submit', async (e) => {
             e.preventDefault();
             if (isSubmitting) return;
 
@@ -395,121 +395,73 @@ const initFormSubmission = () => {
                 }
             };
 
-            // Bulletproof API URL Detection and Sequential Retry
-            const endpoints = [];
+            let baseUrl = '';
             const hostname = window.location.hostname;
             const protocol = window.location.protocol;
 
-            // 1. Current Origin
-            endpoints.push(window.location.origin);
-
-            // 2. Common Localhost/Alternative Endpoints
             if (protocol === 'file:') {
-                endpoints.push('http://127.0.0.1:5002', 'http://localhost:5002');
+                baseUrl = 'http://localhost:5002';
             } else if (hostname === 'localhost' || hostname === '127.0.0.1') {
-                endpoints.push(`http://${hostname}:5002`);
-                endpoints.push(hostname === 'localhost' ? 'http://127.0.0.1:5002' : 'http://localhost:5002');
-            } else if (hostname) {
-                // If on production, maybe the backend is explicitly on 5002
-                endpoints.push(`${protocol}//${hostname}:5002`);
-                endpoints.push('http://127.0.0.1:5002', 'http://localhost:5002');
+                baseUrl = `http://${hostname}:5002`;
+            } else {
+                baseUrl = '';
             }
 
-            // Remove duplicates and filter empty
-            const uniqueEndpoints = [...new Set(endpoints)].filter(e => e);
+            console.log(`📡 Trying: ${baseUrl || '(relative)'}${formConfig.endpoint}`);
 
-            console.log('🚀 Sequential connection strategy:', uniqueEndpoints);
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 12000);
 
-            const attemptSubmission = async (index = 0) => {
-                const baseUrl = uniqueEndpoints[index];
-                if (!baseUrl) {
-                    throw new Error('All connection attempts failed. Please ensure your backend is running on port 5002.');
-                }
-
-                console.log(`📡 [Attempt ${index + 1}] Trying: ${baseUrl}${formConfig.endpoint}`);
-
-                try {
-                    const controller = new AbortController();
-                    const timeoutId = setTimeout(() => controller.abort(), 6000); // 6s timeout
-
-                    const response = await fetch(`${baseUrl}${formConfig.endpoint}`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json'
-                        },
-                        body: JSON.stringify(data),
-                        credentials: 'include',
-                        signal: controller.signal
-                    });
-
-                    clearTimeout(timeoutId);
-
-                    if (!response.ok) {
-                        let errorDetail = response.status;
-                        let errData;
-                        try {
-                            errData = await response.json();
-                            errorDetail = errData.message || response.status;
-                        } catch (e) { }
-
-                        // If it's a 404 or 500, we might be hitting the wrong server/config
-                        // let's try the next endpoint in the list
-                        if (response.status === 404 || response.status === 500) {
-                            console.warn(`⚠️ [Attempt ${index + 1}] Server returned ${response.status}. Trying next endpoint...`);
-                            return attemptSubmission(index + 1);
-                        }
-
-                        throw new Error(`Server returned ${errorDetail}`);
-                    }
-
-                    return await response.json();
-                } catch (error) {
-                    console.warn(`⚠️ [Attempt ${index + 1}] Failed:`, error.message);
-
-                    // If it was a network error, timeout, or aborted, try the next one
-                    if (error.name === 'AbortError' ||
-                        error.message.includes('fetch') ||
-                        error.message.includes('Failed to fetch') ||
-                        error.message.includes('NetworkError') ||
-                        error.message.includes('ECONNREFUSED')) {
-                        return attemptSubmission(index + 1);
-                    }
-
-                    // Otherwise, it might be a validation error from server, stop retrying
-                    throw error;
-                }
-            };
-
-            attemptSubmission(0)
-                .then(result => {
-                    console.log('✅ Success:', result);
-                    if (result.success) {
-                        showMessage('success', 'Submitted Successfully!');
-                        form.reset();
-                        // Clear validation styles
-                        document.querySelectorAll('.input-valid, .input-invalid').forEach(el => {
-                            el.classList.remove('input-valid', 'input-invalid');
-                        });
-                        document.querySelectorAll('.error-message-box').forEach(el => el.classList.remove('show'));
-                        if (typeof checkFormValidityGlobal === 'function') checkFormValidityGlobal();
-                    } else {
-                        showMessage('error', result.message || 'Submission failed. Please try again.');
-                    }
-                })
-                .catch(error => {
-                    console.error('❌ Final Failure:', error);
-                    showMessage('error', error.message || 'Could not connect to the server. Please ensure your backend is running on port 5002.');
-                })
-                .finally(() => {
-                    isSubmitting = false;
-                    submitBtn.innerHTML = originalText;
-                    if (formConfig.id === 'internshipForm') {
-                        submitBtn.disabled = true;
-                    } else {
-                        submitBtn.disabled = false;
-                    }
+                const response = await fetch(`${baseUrl}${formConfig.endpoint}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(data),
+                    credentials: 'include',
+                    signal: controller.signal
                 });
+
+                clearTimeout(timeoutId);
+
+                let result;
+                try {
+                    result = await response.json();
+                } catch (e) {
+                    throw new Error(`Server returned ${response.status}`);
+                }
+
+                if (!response.ok) {
+                    throw new Error(result.message || `Server returned ${response.status}`);
+                }
+
+                console.log('✅ Success:', result);
+                if (result.success) {
+                    showMessage('success', 'Submitted Successfully!');
+                    form.reset();
+                    // Clear validation styles
+                    document.querySelectorAll('.input-valid, .input-invalid').forEach(el => {
+                        el.classList.remove('input-valid', 'input-invalid');
+                    });
+                    document.querySelectorAll('.error-message-box').forEach(el => el.classList.remove('show'));
+                    if (typeof checkFormValidityGlobal === 'function') checkFormValidityGlobal();
+                } else {
+                    showMessage('error', result.message || 'Submission failed. Please try again.');
+                }
+            } catch (error) {
+                console.error('❌ Final Failure:', error);
+                showMessage('error', error.message || 'Could not connect to the server. Please ensure your backend is running.');
+            } finally {
+                isSubmitting = false;
+                submitBtn.innerHTML = originalText;
+                if (formConfig.id === 'internshipForm') {
+                    submitBtn.disabled = true;
+                } else {
+                    submitBtn.disabled = false;
+                }
+            }
         });
     });
 };

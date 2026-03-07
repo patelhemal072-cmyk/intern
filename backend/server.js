@@ -36,14 +36,14 @@ app.use(cors({
 
     // 2. Define allowed non-local origins here (if any)
     const allowedOrigins = [
-      'https://intern.errorinfotech.in'
+      'https://intern.errorinfotech.in',
+      'https://errorinfotech.in'
     ];
 
     // 3. Robust check for local development origins (localhost, 127.0.0.1, [::1], or private network IPs)
-    // Updated regex to include IPv6 loopback [::1]
     const isLocalhost = /^http:\/\/(localhost|127\.0\.0\.1|\[::1\]|192\.168\.\d+\.\d+|10\.\d+\.\d+\.\d+|172\.(1[6-9]|2\d|3[0-1])\.\d+\.\d+)(:\d+)?$/.test(origin);
 
-    if (isLocalhost || allowedOrigins.includes(origin)) {
+    if (isLocalhost || allowedOrigins.includes(origin) || allowedOrigins.includes(origin.replace(/\/$/, ''))) {
       callback(null, true);
     } else {
       console.warn(`[CORS Blocked]: Request from origin "${origin}" was rejected. Please add this origin to server.js if it's expected.`);
@@ -53,7 +53,7 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'Cache-Control', 'Pragma', 'X-Requested-With'],
   credentials: true,
-  optionsSuccessStatus: 200 // Some legacy browsers choke on 204
+  optionsSuccessStatus: 200
 }));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
